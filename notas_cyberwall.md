@@ -148,3 +148,28 @@ En esta charla se plantea un caso práctico de un formulario con un login formad
 
 - Reto 6 - En el disco duro clonado nos encontramos restos de un famoso gestor de contraseñas. A lo mejor nos puede ser de utilidad. Tu misión será averiguar la contraseña de la base de datos. 
     En memoria RAM no tiene ningún gestor de contraseñas (se suele utilizar el keypass). Comprobamos en disco si lo tiene instalado y efectivamente lo tiene instalado. Vamos a buscar donde tiene almacenada la bd del gestor de contraseñas. Keypass por defecto la almacena en la carpeta Documents del usuario donde vemos que se encuentra el fichero passwords.kbdx. Exportamos el fichero y procedemos a sacar el hash de la contraseña. Antes de eso comprobamos con el comando `file passwords.kdbx` que se trata de una base de datos de contraseñas, una vez que sabemos esto vamos a ejecutar un programa que nos saca de la base de datos el hash de la contraseña, para ello ejecutamos `python2 keepass2john.py passwords.kdbx > outputfile.hash`. Si le hacemos un cat a ese archivo vemos que nos ha extraido con el formato `passwords:hash` el hash de la contraseña de la base de datos de keypass. Procedemos a quitarle la cadena passwords: para quedarnos solo con el hash y una vez tenemos el hash solo utilizamos `hashcat -m 13400 -a 0 -w 1 pass.hash rockyou.txt --force --show` para crackear el hash. Con el parámetro 13400 le indicamos que es el tipo de hash que utiliza keypass y con -a 0 -w 1 le indicamos parámetros de velocidad, por último le pasaremos un diccionario de palabras. Al hacerlo nos muestra al final del hash la contraseña. Con esta contraseña procedemos a abrir el fichero sqlite del keypass donde encontramos una contraseña almacenada, le indicamos que nos la copie al portapapeles y tendríamos la flag del reto.
+
+### Tema 3.- Escaneando mi red como Hácker Ético - Parte I
+
+Recordemos que un Hácker no es un pirata informático sino una persona con grandes conocimientos en seguridad informática. Se usa el término Ético para reforzar la idea de que el objetivo de un Hácker no es delinquir sino reforzar la seguridad de nuestros sistemas. 
+
+En este ámbito definimos la seguridad informática como el conjunto de medios técnicos para evaluar la seguridad de los sistemas de información, así como prevenir y detectar posibles amenazas que puedan poner en riesgo a estos sistemas. 
+
+Los objetivos de la seguridad informática son proteger los siguientes aspectos:
+- Confidencialidad: La información sólo puede ser accesible por las personas o sistemas autorizados para ello. 
+- Integridad: La información ha de ser completa y correcta en todo momento, es decir, no ha sido alterada y se puede comprobar que no ha habido manipulación de la misma.
+- Disponibilidad: La capacidad de un servicio, dato o sistema de ser accesible y reutilizable por los usuarios o procesos autorizados cuando lo requieran. 
+- No repudio o irrenunciabilidad: Está relacionado con la autenticación que permite probar la participación de las partes en una comunicación. (No repudio en el origen o no repudio en en el destino).
+
+¿Cómo conseguimos proteger estos aspectos? Haciendo uso de:
+- Autenticación
+- Autorización
+- Auditoría
+- Encriptación
+- Copias de seguridad
+- Firewalls, WAF o IDS
+- Servidores Proxy
+- Firma electrónica o Certificado digital
+- Leyes como: LOPD o GDPR
+
+Minuto 10:20
