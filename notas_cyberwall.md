@@ -172,4 +172,54 @@ Los objetivos de la seguridad informática son proteger los siguientes aspectos:
 - Firma electrónica o Certificado digital
 - Leyes como: LOPD o GDPR
 
-Minuto 10:20
+Podemos detectar cuatro tipos de amenazas:
+- Interrupción: La interrupción de un sistema (de datos) por medio de un ataque, por ejemplo, de denegación de servicio (DoS o DDoS), apagar un router, etc. Hay un programa denominado logstalgia que a partir de un log de peticiones de un servidor web podemos visualizar gráficamente la cantidad de peticiones, IPs y demás a un servicio.
+- Intercepción: Acceso a la información por medio de un ataque, por ejemplo, de hombre en medio (MiTM, Man-in-the-Middle). Si la comunicación entre emisor y receptor no está cifrada el interceptor podrá ver toda la información.
+- Modificación: Acceso a la información y modificación de la misma. La destrucción es un tipo de modificación. 
+- Fabricación: Es una modificación destinada a conseguir un objeto similar al atacado de forma que sea difícil distinguir entre el original y el fabricado. El hacerte pasar por otra persona es un ejemplo de fabricación.
+
+Vocabulario de Amenazas:
+- Password Cracking: Intentar crackear una contraseña mediante algoritmos.
+- Exploits: Herramientas (trozos de código) que se aprovechan de los fallos de seguridad para penetrar en el sistema. 
+- Keyloggers: Programas o dispositivos hardware que registran lo que escribimos.
+- Spam: Publicidad masiva que se suele enviar por correo. Puede contener malware. 
+- Phising: Técnica de suplantar una web o correo electrónico para conseguir información
+- Malware
+- Spoofing
+- Ingeniería Social: Técnica de engañar o obtener información de personas mediante el engaño. 
+- Script Kiddies: Personas que tienen pocos conocimientos pero por medio de tutoriales realizan ataques.
+- Backdoors: Punto de acceso a un sistema originado por un fallo de seguridad.
+- Bugs: Fallo o defecto en un software, algunos se pueden aprovechar para vulnerar la seguridad.
+- Troyanos: Software que gana el control total de un sistema.
+- Sniffing
+- Hijacking
+- Defacement: Entrar en una web y cambiar la página principal.
+
+Metodología para llevar a cabo un Hacking Ético:
+- Auditar un sistema con unas garantías.
+- Siguiendo unos procedimientos estándar.
+- Auditoría de Seguridad de Sistemas.
+
+La metodología que vamos a utilizar es la Metodología Abierta de Comprobación de Seguridad (OSSTM). Es un estándar muy utilizado en el mundo profesional para las Auditorías de Seguridad de los Sistemas. El manual de OSSTM es un doc estándar y ordenado de las diferentes verificaciones y pruebas de seguridad que debe llevar a cabo el profesional en seguridad informática. 
+
+Cuando nosotros realizamos una auditoría o un pentesting (en este caso de una LAN) nos daremos cuenta de que realizaremos una metodología cíclica ya que lo que hoy vale y es seguro es posible que mañana no lo sea. El ciclo de vida de un pentesting es:
+1. Planificación: Determinar el alcance del test de penetración y objetivos
+2. Recolección de información o Information Gathering - OSINT (Open Source Intelligence). 
+    - Footprinting: recolección de información pública
+3. Análisis de Vulnerabilidades
+    - FingerPrinting: enumeración de objetivos
+4. Explotación de las vulnerabilidades
+    - Explotación - Elevación - Post-Explotación
+5. Informe Técnico + Informe Ejecutivo
+
+Tipos de Auditorías
+- Auditoría de Caja Negra, el auditor no conoce ninguna característica del interior de la empresa u organización. Recolectar información pública.
+- Auditoría de Caja Blanca, el auditor toma el rol de un empleado con acceso total a todos los sistemas internos y total conocimiento de la infraestructura.
+- Auditoría de Caja Gris, el auditor coge el rol de un empleado con los privilegios justos para desempeñar su trabajo.
+
+Practicando con Kali - Information Gathering
+- Intentamos obtener toda la información posible mediante terceros: hunter, shodan, whois, netcraft, archive.org, robtex, maltego, spiderfoot...
+- Footprinting: recolección de información sin hacer ruido
+- Otras herramientas: TheHarvester
+
+Minuto 29
