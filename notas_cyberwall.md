@@ -222,4 +222,35 @@ Practicando con Kali - Information Gathering
 - Footprinting: recolección de información sin hacer ruido
 - Otras herramientas: TheHarvester
 
-Minuto 29
+Supongamos a continuación el siguiente caso práctico: Realizar una auditoría de seguridad a la policía
+- Para ello comenzamos con el information gathering, en concreto usaremos `theHarvester -d policia.es -l 500 -b google` para indicarle que investigue el dominio policia.es con las últimas 500 búsquedas realizadas en el buscador google. Gracias a este comando obtendremos una serie de correos electrónicos, dominios, etc.
+- A continuación pasamos al Análisis de Vulnerabilidades. En esta etapa hacemos fingerprinting es decir, interactuamos con el objetivo para obtener información, dejamos huella. En concreto vamos a hacer Banner Grabbing, es una técnica que se utiliza para el descubrimiento de versiones según el banner que te devuelva el servicio por el cual se pregunta. Para llevar a cabo esta técnica tenemos varias posibilidades:
+    - Netcat -> nc IP PUERTO
+    - Telnet -> telnet IP PUERTO
+    - Nmap -> nmap -sV -p PUERTO IP --script=banner
+        - Nmap es un escáner de puertos multiplataforma
+        - `sudo nmap -sV -Pn 192.168.202.156` -Pn para evitar que haga ping para que un posible firewall no nos descarte, -sV para que nos diga la versión de los servicios. Esto nos dará un montón de información como los puertos, su estado, servicios, versión, SO e incluso su fingerprinting. `sudo nmap -sV -Pn -p 21 -sC 192.168.202.156` para que nmap ejecute (el máximo número de) sus script contra el puerto 21, estos scripts intentarán obtener información complementaria sobre el servicio que se ejecute en ese puerto. Por ejemplo para este puerto nos indica que el servidor FTP que corre en ese puerto permite el acceso mediante usuarios anónimos
+    - Utilizar la web shodan.io
+    
+    - Si bien con shodan.io bien con telnet utilizamos el puerto 21 `telnet 150.214.110.200 21` (utilizando la IP de la Universidad de Sevilla) vemos que tienen en ese puerto un servidor FTP. 
+    - A la hora de realizar el Análisis de Vulnerabilidades debemos tener en cuenta (sobre todo de cara a realizar un informe) los siguientes elementos: 
+        - CVSS (Common Vulnerability Scoring System). Es un sistema de Evaluación de Vulnerabilidades que asigna una métrica para evaluar los fallos de seguridad, con este valor o conjunto de valores sabemos el nivel de riesgo que existe. 
+        - ¿Dónde buscamos cada puntuación para cada vulnerabilidad que encontremos? En la NVD (National Vulnerability Database) entre otras. 
+        - Las vulnerabilidades se etiquetan con etiquetas como CVE (Common Vulnerabilities and Exposure). Es un estándar de nombres de vulnerabilidades de seguridad informática de uso gratuito y público. Es un diccionario de vulnerabilidades donde cualquier persona puede buscar el nombre que recibe una vulnerabilidad, en este caso es un identificador (ejemplo: CVE-2017-0143). 
+        - ¿Quién asigna un CVE? La CNA (Candidate Numbering Authority) que se constituye por los principales fabricantes de software y hardware, empresas del sector, etc. LA CVE está gestionado por The Mitre Corporation que es una empresa de EEUU que actúa como líder del consejo editor. 
+        - Según CVE, una vulnerabilidad es un estado de un sistema informático (o conjunto de sistemas) que cumple alguno de los siguientes casos:
+            - Permite a un atacante ejecutar comandos como otro usuario.
+            - Permite a un atacante acceder a datos violando las restricciones de control de acceso específicas para dichos datos.
+            - Permite a un atacante suplantar a otra entidad.
+            - Permite a un atacante llevar a cabo una denegación de servicio.
+        - Por supuesto existen varios sistemas para clasificar las vulnerabilidades además de mediante CVE. 
+            - Tenemos por ejemplo BID (BugTraq ID), asignado por la lista BugTraq. Empresa comprada por SecurityFocus, que a su vez fue absorbida por Symantec. 
+            - MS (Microsoft Security) forma en la cual Microsoft identifica sus fallos de seguridad.
+        - Enlaces útiles de cara al Análisis de Vulnerabilidades
+            - The Open Source Vulnerability Database (OSVD) -> Open Security Foundation. http://osvdb.org/
+            - National Vulnerability Database (NVD). Base de datos perteneciente al gobierno de EEUU de acceso público. http://nvd.nist.gov/
+            - SecurityFocus Vulnerability Database -> Symantec http://www.securityfocus.com/bid
+            - Exploit DB http://www.exploit-db.com
+            - Aplicación nessus para realizar escaneos de redes.
+            - MBSA (Microsoft Baseline Security Analyzer) para analizar tu equipo para buscar fallos de seguridad en tu equipo.
+
