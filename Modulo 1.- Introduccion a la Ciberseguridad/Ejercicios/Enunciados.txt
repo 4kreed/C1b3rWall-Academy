@@ -4,6 +4,6 @@ Ejercicio 2.- También se sabe que por lo visto el atacante dejo un mensaje de i
 
 Ejercicio 3.- Al parecer el equipo estaba conectando con algun centro de control remoto localiza la dirección. Encuentra el nombre del archivo descargado (archivo "file_2.rar").
 
-Ejercicio 4.- Tenemos una imagen de una máquina virtual con el flag pero no sabemos recuperarlo. ¿Podrías ayudarnos?.(archivo "module1.zip").
+Ejercicio 4.- Tenemos una imagen de una máquina virtual con el flag pero no sabemos recuperarlo. ¿Podrías ayudarnos? (archivo "module1.zip").
 
 Descargar la carpeta que contiene los recursos para los ejercicios aquí - https://drive.google.com/drive/folders/1ArHNM30i8E6uZVjnjPf4yJdOh5lacNXS?usp=sharing

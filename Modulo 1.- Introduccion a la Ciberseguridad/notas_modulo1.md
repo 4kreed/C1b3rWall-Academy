@@ -1,6 +1,6 @@
 # Módulo 1.- Introducción a la Ciberseguridad
 
-## Tema 1.- Uso de Recursos en Internet con OSINT. Eduardo Sanchez
+## Tema 1.- Uso de Recursos en Internet con OSINT.
 
 OSINT significa Open Source Intelligence (en español Inteligencia de Fuentes Abiertas), y se trata de un conjunto de técnicas y herramientas para recopilar información pública, correlacionar los datos y procesarlos.
 
