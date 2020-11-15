@@ -1,0 +1,9 @@
+Ejercicio 1.- El equipo policial ha conseguido un volcado de memoria de un equipo en el que se introdujo un famoso ciberdelincuente. Se sabe que el ciberdelincuente estaba intentado descargarse archivos mediante una herramienta de certificación. Encuentra el nombre del archivo descargado (archivo "file_1.rar").
+
+Ejercicio 2.- También se sabe que por lo visto el atacante dejo un mensaje de intrusión en el escritorio mediante una aplicación de dibujo (archivo "file_1.rar").
+
+Ejercicio 3.- Al parecer el equipo estaba conectando con algun centro de control remoto localiza la dirección. Encuentra el nombre del archivo descargado (archivo "file_2.rar").
+
+Ejercicio 4.- Tenemos una imagen de una máquina virtual con el flag pero no sabemos recuperarlo. ¿Podrías ayudarnos?.(archivo "module1.zip").
+
+Descargar la carpeta que contiene los recursos para los ejercicios aquí - https://drive.google.com/drive/folders/1ArHNM30i8E6uZVjnjPf4yJdOh5lacNXS?usp=sharing
