@@ -219,3 +219,138 @@ Actualmente existen alertas masivas en algunos países que avisan por medio de u
 
 Hoy en día los sistemas de comunicación inalámbrica son fundamentales para la coordinación y la comunicación. Por eso, la interceptación de las señales, puede ser un punto fundamental en la generación de inteligencia, sobre todo, en la lucha contra el terrorismo.
 
+## Tema 3.- Introducción Wi-Fi 6
+
+En esta sección analizaremos los siguientes aspectos:
+- Repasar la historia de la tecnología de red inalámbrica, comúnmente conocida como Wi-Fi.
+- Analizar los avances que introduce la última actualización del estándar, conocida como Wi-Fi 6.
+- Explorar de qué manera desplegar esta tecnología de manera eficiente, desde la perspectiva de un entorno de uso corporativo (no residencial). 
+
+### ¿Qué es el Wi-Fi y cómo hemos llegado a la situación actual?
+
+A día de hoy casi cualquier persona sabe de manera básica que es el Wi-Fi. Esta importancia del Wi-Fi (sobre todo frente a otras tecnología inalámbricas) en nuestras vidas se debe a los siguientes factores: 
+- Crecimiento de Internet / Movilidad
+- Estándares abiertos
+- No dependemos de terceros para tener servicio (no es el caso de una línea de teléfono por ejemplo que necesitamos una asociación con una compañía de teléfono).
+- No hay que pagar licencias (como si hay que pagar para usar radio-frecuencias).
+- User-friendly
+
+Veamos algunas características del Wi-Fi:
+- Es una tecnología inalámbrica de red local (WLAN), que hace uso de bandas de radiofrecuencia no-licenciada (ISM).
+- Nace en 1997, pero su uso real inicia en 1999.
+- Se basa en contienda (CSMA/CA)
+- Propone, originalmente, 2 formas de conexión de los usuarios. 
+
+¿Qué es CSMA/CA?
+- Es un sistema de comunicación en la que un usuario puede transmitir la información sin interferencias (colisiones). Es decir, el usuario sólo puede transmitir cuando lo pueda hacer sin interferencias.
+- En este caso sería el espacio de radiofrecuencia, que se usará cuando nadie más lo esté utilizando.
+
+¿Qué forma de conexión se utiliza en 802.11?
+Existen dos formas de comunicación:
+- La primera denominada ad hoc, en la que la comunicación se realiza entre iguales (peers) pero uno de los dispositivos toma el rol de "master" y "organiza" la comunicación entre los dispositivos en red. Un ejemplo de este tipo de comunicación es la llevada a cabo cuando usamos Bluetooth, donde un dispositivo se conecta con otro igual.
+- La segunda es la comunicación basada en infraestructura. En esta comunicación sí tengo un elemento central al que se le denomina como Punto de Acceso (Access-Point, AP) y que actúa de "master" gestionando la comunicación en este entorno inalámbrico y que además sirve de unión entre los elementos inalámbricos y los que están conectados por medio de una red cableada.
+- Esta segunda forma es la utilizada en el estándar 802.11
+
+Otros conceptos básicos:
+- Banda de frecuencia y canales
+    - Actualmente se definen dos bandas de frecuencia, una la de 2.4 GHz y otra la de 5GHz. Estas bandas se dividen a su vez en lo que se conoce como canales que es donde tiene lugar la comunicación. 
+    - Dentro de la banda de 2.4GHz en Europa se definen 13 canales donde todos ellos menos los canales 1,6 y 11 están superpuestos unos con otros. En EEUU por ejemplo solo definen 11 canales. 
+    - Dentro de la banda de 5GHz se definen muchos más canales, por eso siempre será preferible usar esta sobre la otra, sin embargo, no todos los dispositivos (sobre todo los más antiguos) son capaces de operar con esta banda. Dentro de esta banda en función de la frecuencia podemos configurar las comunicaciones para que halla más o menos canales. Por ejemplo a 20 MHz podemos establecer 8 canales mientras que a 160 MHz sólo podemos establecer 1 canal.
+- Método de modulación y acceso
+    - La modulación consiste en la transformación de un contenido digital (un archivo) a una onda. Algunos tipos de modulación son BPSK, QPSK o xx-QAM.
+    - Por otro lado el método de acceso determina cómo debemos estructurar nuestros paquetes y cómo enviamos estos a otro destinatario. Algunos métodos de acceso son DSSS, OFDM y OFDMA.  
+    - Estos mecanismos se adaptan al entorno para favorecer el ancho de banda o el alcance de la señal.
+- Antenas
+    - Pueden ser omnidireccionales o directivas en función del arco que cubre.
+    - Pueden ser discretas (una única antena) o un arreglo de varios elementos (MIMO) que se usa para soportar mayor variedad de dispositivos. 
+
+¿Qué significa Wi-Fi?
+- Primero veamos quién apodó este término. En concreto la entidad llamada "Wi-Fi Alliance" antaño llamada WECA (Wireless Ethernet Compatibility Alliance) la cual a diferencia del IEEE no es una entidad que desarrolla el estándar sino es una agrupación de empresas que se reune y la promociona. 
+- Esta alianza lo primero que hizo fue ponerle el nombre Wi-Fi teniendo en cuenta que era una tecnología que se pensó para uso residencial (en los hogares). En este ambiente y en ese momento estaba muy arraigado el término Hi-Fi (High Fidelity) de los dispositivos de sonido. A partir del cual surgió el nombre Wi-Fi que no es unión de Wireless Fidelity sino que se pensó para que se asociara al concepto de Hi-Fi que tan famoso era en ese momento. Por tanto esta alianza lo que hace no es definir el estándar sino promover el estándar por medio de certificados que dan a los dispositivos que cumplen unas características mínimas necesarias para que se pueda comunicar por medio del estándar 802.11. 
+
+A lo largo de los años el Wi-Fi ha tenido varias versiones:
+- 11b / 1999 
+- 11a / 1999 - salió a la vez que el anterior pero se aplicó años después. Incluía la posibilidad de usar la banda 5GHz (la 11b solo podía usar la banda 2.4GHz)
+- 11g / 2003 - en la que hubo un aumento sustancial de velocidad
+- 11n / 2009 / Wi-Fi 4 - se despliega muchísimo esta tecnología y se introducen conceptos como MIMO
+- 11ac / 2014 / Wi-Fi 5 - actual
+
+En las últimas versiones la alianza decidió renombrar estas versiones y seguir la tendencia del 3G, 4G, 5G, etc (aunque el Wi-Fi siempre ha ido una versión por delante de la telefonía móvil, es decir con el 5G tenemos Wi-Fi 6) con el objetivo de que fuesen más amigable. 
+
+
+### ¿Qué es el Wi-Fi 6 y en qué nos puede beneficiar?
+
+Esta claro que el Wi-Fi es muy popular pero ¿qué problemas tiene? 
+
+Como hemos comentado el Wi-Fi se originó para un uso residencial donde en ese momento no había tablets, a los móviles le quedaban todavía algunos años y apenas había portátiles. Esto junto a su condición de contingencia (recordemos, se transmite cuando no haya interferencias), hace que conforme aumenta la cantidad de dispositivos conectados la calidad de servicio disminuye drásticamente.  
+
+Además el Wi-Fi es "gratis" y cualquiera lo puede usar (al contrario de las bandas de radiofrecuencia). Eso hace que ya no es sólo que en mi casa haya muchos dispositivos sino que el hecho de que mi vecino utilice Wi-Fi me afecta también a mi. 
+
+De esta manera nace el Wi-Fi 6 para satisfacer las necesidades del Wi-Fi del momento (a las que se le sumarían la necesidad de utilizar IoT, vídeo a alta resolución o incluso VR). 
+
+Y para ello el Wi-Fi 6 no sólo se conforma con mejorar la velocidad de transmisión sino también aumentar el número de conexiones (IoT) y la latencia (es decir la velocidad a la que puedo enviar paquetes, video).
+
+Si bajamos niveles de abstracción esto se consigue por medio de las siguientes tecnologías:
+- Mayor ancho de banda - 1024-QAM, 8x8 MU-MIMO
+- Mayor concurrencia - UL/DL OFDMA, UL/DL MU-MIMO
+- Menos latencia - OFDMA Spatial Reuse
+- Menos consumo energético - TWT 20MHz Only
+
+Por ejemplo, hasta Wi-Fi 5 usabamos OFDM en donde en un intervalo de tiempo determinado todos los recursos se utilizan para transmitir a un único dispositivo. Con Wi-Fi 6 usamos OFDMA donde en un intervalo de tiempo determinado podemos transmitir a varios dispositivos, no simultáneamente sino primero a uno y luego a otro. Con lo cual se hace un reparto de tiempo y frecuencia entre los usuarios.
+
+Otro cambio significativo fue la llegada del MU-MIMO (Multiuser - Multiple Input / Multiple Output), que se introdujo en el Wi-Fi 5. La idea es que si aumentamos el número de antenas podremos ofrecer servicio a mayor cantidad de usuarios, pues asignamos una antena a cada usuario. No obstante en Wi-Fi 5 esto sólo sucedía para la bajada (pero no la subida) de datos. Con Wi-Fi 6 no sólo se duplica la cantidad de antenas disponibles sino que se aporta también la posibilidad de que el servicio sea bidireccional, es decir, varios usuarios pueden enviar y recibir datos a la vez.
+
+Por medio de pruebas se ha demostrado que el OFDMA que utiliza el Wi-Fi 6 es realmente ventajoso pero sólo cuando llegamos a un número de usuarios mayor de 10, mientras que si son menos usuarios obtenemos un rendimiento peor que con las generaciones anteriores. ¿Entonces si en mi casa tengo pocos dispositivos va a funcionar peor? No, la configuración se adaptará al número de dispositivos para utilizar unos métodos de modulación y acceso u otros.
+
+
+### Mejores prácticas de diseño para redes Wi-Fi
+
+Cuando nosotros diseñamos una red cableada sabemos perfectamente cómo y por dónde se van a comunicar los dispositivos (después de todo, nosotros establecemos el cableado), sin embargo, en las comunicaciones inalámbricas no es así. 
+
+Por mucho que el Wi-Fi 6 alivien algunos problemas, las interferencias no desaparecen (sobre todo cuando aumentamos tanto el número de dispositivos). Además las barreras arquitectónicas continúan siendo un reto para la cobertura (paredes gruesas, etc.). Y conforme se va incorporando el Wi-Fi a entornos industriales las compañías deben comprometerse por contrato al cumplimiento de una serie de requisitos de calidad mínimos o disposiciones legales. 
+
+Como hemos dicho los problemas del Wi-Fi se acentúan en una red Enterprise, donde se distinguen los siguientes elementos:
+- Controlador: Es un elemento que orquesta los parámetros y políticas de un conjunto de AP, de manera que se facilita el ajuste RF, la autenticación de los usuarios o el roaming entre los AP. Puede ser físico o software, estar ubicado en local, en un sitio central o en la nube. 
+- Gestión de Infraestructura: Es una suite de software que permite tener una visión global del estado de la red Wi-Fi, permitiendo la visualización de alarmas, topología, reportes, configuración, etc. Suele desplegarse en una ubicación central o en la nube.
+- Gestión de Usuarios: Es una suite de software que permite tener, establecer y centralizar políticas relativas a la autenticación y autorización de los dispositivos de los clientes que se conectan a la red. Suele desplegarse en una ubicación central o en la nube. 
+
+Factores de un buen diseño:
+- El espacio físico: dónde se pueden instalar los AP y dónde estarán los usuarios de la red, es el primer elemento a controlar. Considerar que es necesario proporcionar conectividad y electricidad al AP. La seguridad de los instaladores también debe ser tomada en cuenta.
+- Nivel de señal recibida (RSSI): es la "fuerza" de la señal recibida y que determinará la velocidad de conexión. Es importante saber las aplicaciones que se utilizarán y la distancia a la que estarán de los dispositivos.
+- Nivel de ruido (SNR): es la medida de la "limpieza" del medio, simplificando, las interferencias que pueden generarse y afecten la comunicación entre AP y un dispositivo. Es importante saber las aplicaciones que se utilizarán y la densidad de dispositivos en servicio. 
+
+Otras consideraciones a tener en cuenta en el diseño:
+- Herramientas. A la hora de considerar el diseño podemos disponer de herramientas de análisis y optimización, destinadas a conocer la experiencia del usuario y no sólo el estado de la red. 
+- Seguridad. Al igual que otros sistemas de comunicación, el Wi-Fi ha ido adaptando sus capacidades de seguridad a medida que la tecnología y las aplicaciones han evolucionado y surgen nuevas amenazas. La mejora más reciente es la incorporación de WPA3, que define los mecanismos de negociación de claves y cifrado entre la infraestructura y los dispositivos. El nivel de seguridad de una red Wi-Fi en 2020 es similar al de una conexión cableada. No obstante sí que debemos aplicar una serie de medidas de cara a la mejora de la seguridad:
+    - Separar la comunicación de los distintos grupos de usuarios (corporativos, invitados, etc) por SSID, VLAN, etc. Cada grupo con sus políticas de seguridad particulares.
+    - Utilizar mecanismos de autorización basados en perfil de usuario individual (como 802.1x o Personal PSK)
+    - Migrar a mecanismos de cifrado mejorados, como WPA3, lo antes posible.
+    - Activar mecanismos de monitorización activos en el dominio RF.
+    - La seguridad debe ser general a toda la red y usuarios, en todo caso añadir políticas adicionales al usuario de acceso inalámbrico, no tratarlo de manera aislada. 
+
+### Preguntas frecuentes
+
+Si en una red hay dispositivos Wi-Fi 6 y dispositivos de generaciones anteriores, ¿todo el sistema red funcionará con los protocolos antiguos?
+
+La negociación de la comunicación se realiza con cada dispositivo individualmente. Esta claro que el usuario del Wi-Fi 5 no se va a poder beneficiar de las ventajas del mismo.
+
+¿Qué es mejor Wi-Fi 6 o 5G?
+
+Aunque comparten algunos aspectos no comparten en teoría los mismos casos de uso sino que son complementarias.
+
+¿Wi-Fi 7?
+
+Se prevée que para 2023 tengamos este nuevo estándar, donde tendremos mayor ancho de banda y se espera que todas las aplicaciones se puedan integrar con el Wi-Fi de manera masiva.
+
+
+
+
+
+
+
+
+
+
+
+
+
